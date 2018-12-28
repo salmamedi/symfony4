@@ -1,0 +1,42 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="jumbotron" text-center>
+        <div class="container">
+            <h1>Bienvenue sur notre page Home</h1>
+
+            <p>Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus, Luscus quidam curator urbis subito visus: eosque ut heiulans
+                baiolorum praecentor ad expediendum quod orsi sunt incitans vocibus crebris.qui haut longe postea ideo vivus exustus est.</p>
+        </div>
+        <div class="container">
+        	<h2>les derniers biens</h2>
+
+        	<div class=" row flex">
+	        	{% for property in properties %}
+		        	<div class="col-3">
+		        		<div class="card">
+		        			<div class="card-body">
+		        				<h5 class="card-title">
+		        					<a href="{{path('property.show' , {'id': property.id, 'slug': property.slug} )}}""> {{property.title}} </a> 
+		        				</h5>
+		        				<p class="carte-text"> {{property.city}} {{property.zipCode}} </p>
+		        				<p class="text-primary" style="font-weight: bold"> {{property.price|number_format(0, '', ' ') }} </p>
+
+		        			</div>
+		        		</div>
+		        	</div>
+	        	{% endfor %}
+	        </div>
+
+	        	
+	         	
+        </div>
+    </div>
+
+    
+
+
+
+{% endblock %}
