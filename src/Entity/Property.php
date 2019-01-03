@@ -82,7 +82,6 @@ class Property
      */
     private $sold = false;
 
-
     /**
      * @ORM\Column(type="datetime")
      */
@@ -120,6 +119,11 @@ class Property
         return $this;
     }
 
+    public function getSlug():string
+    {
+       return $slugify = (new Slugify())->slugify($this->title);
+    }
+    
     /**
      * @return mixed
      */
@@ -317,6 +321,7 @@ class Property
         $this->created_at = $created_at;
         return $this;
     }
+
 
 
 }

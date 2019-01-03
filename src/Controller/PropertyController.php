@@ -75,11 +75,10 @@ class PropertyController extends AbstractController {
      */
     public function showAction(Property $property, $slug)
     {
-
         if ($property->getSlug() !== $slug) {
-            
             return $this->redirectToRoute('property.show',[
                 'id' => $property->getId(),
+
                 'slug' => $property->getSlug()
             ]);
         }

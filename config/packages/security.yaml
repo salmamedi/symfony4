@@ -18,7 +18,10 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+                property: mail
+
+        oauth:
+            id: knpu.oauth2.user_provider
         # used to reload user from session & other features (e.g. switch_user)
 #        in_memory:
 #            memory:
@@ -32,19 +35,26 @@ security:
             security: false
         main:
             anonymous: true
+            provider: app_user_provider
+            form_login:
+                login_path: security_login
+                check_path: security_login
 
-            # activate different ways to authenticate
+            logout:
+                path: security_logout
+                target: property.index
 
-
-            #http_basic: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: true
-            # https://symfony.com/doc/current/security/form_login_setup.html
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+            guard:
+                authenticators:
+                    - App\Security\GoogleAuthenticator
+#                    -  App\Security\Authenticator\FacebookAuthenticator
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
+
+
+
+
+
+
 
