@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Property;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+//use MongoDB\Driver\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Query;
 
 /**
  * @method Property|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,14 +21,14 @@ class PropertyRepository extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
-
-     public function findVisibleProperty()
+    /**
+     * @return Query
+     */
+     public function findVisibleQuery(): Query
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.sold = false')
-            ->getQuery()
-            ->getResult()
-        ;
+            ->getQuery();
     }
 
    public function findLAtest() : array
@@ -37,7 +39,6 @@ class PropertyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-
     }
 
 

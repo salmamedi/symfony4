@@ -6,6 +6,9 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cocur/slugify": "^3.1",
+        "friendsofsymfony/user-bundle": "~2.0",
+        "fzaninotto/faker": "^1.8",
+        "knplabs/knp-paginator-bundle": "^2.8",
         "knpuniversity/oauth2-client-bundle": "^1.26",
         "league/oauth2-facebook": "^2.0",
         "league/oauth2-github": "^2.0",
@@ -26,6 +29,7 @@
         "symfony/security-bundle": "4.2.*",
         "symfony/serializer-pack": "*",
         "symfony/swiftmailer-bundle": "^3.1",
+        "symfony/templating": "4.2.*",
         "symfony/translation": "4.2.*",
         "symfony/twig-bundle": "4.2.*",
         "symfony/validator": "4.2.*",
@@ -33,6 +37,7 @@
         "symfony/yaml": "4.2.*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.1",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
