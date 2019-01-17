@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="jumbotron" text-center>
+        <div class="container">
+            <h1>Gerer les biens </h1>
+
+            <p>Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus, Luscus quidam curator urbis subito visus: eosque ut heiulans
+                baiolorum praecentor ad expediendum quod orsi sunt incitans vocibus crebris.qui haut longe postea ideo vivus exustus est.</p>
+        </div>
+        <div class="container">
+            <h2>liste des proprietaires </h2>
+
+            <table class="table table-striped">
+                <thead></thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Action</th>
+                </tr>
+                <tboody>
+                    {% for property in properties %}
+                        <tr>
+                            <td>{{ property.title  }}</td>
+                            <td>
+                                <a class="btn btn-secondary" href="{{path('admin.property.edit' , {'id': property.id} )}}"> Modifier</a>
+                                <a class="btn btn-secondary" href="{{path('admin.property.show' , {'id': property.id} )}}"> Voir</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tboody>
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}

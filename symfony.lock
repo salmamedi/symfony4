@@ -1,4 +1,7 @@
 {
+    "allprogrammic/sendinblue-bundle": {
+        "version": "1.0.x-dev"
+    },
     "cocur/slugify": {
         "version": "v3.1"
     },

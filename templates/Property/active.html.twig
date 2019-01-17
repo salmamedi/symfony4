@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Active' %}
+{% block body %}
+
+    <div class="container mt-4">
+        <h1>Voir les biens Actifs </h1>
+        <div class="row">
+            {%  for property in  propertiesActive  %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="cart-title">
+                                <a href="{{path('property.show' , {'id': property.id, 'slug': property.slug} )}}""> {{property.title}} </a>
+                            </h5>
+                            <p class="card-text"> {{ property.city }} {{ property.zipcode }}</p>
+                            <div calss="text-primary" style="font-size:2rem">
+                                {{ property.price }}
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="navigation">
+            {#{{ knp_pagination_render(pagination) }}#}
+        </div>
+    </div>
+{% endblock %}

@@ -3,16 +3,20 @@
 namespace App\Repository;
 
 use App\Entity\Property;
+use App\Entity\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 //use MongoDB\Driver\Query;
+//use Doctrine\DBAL\Query\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+use DateTime;
 
 /**
  * @method Property|null find($id, $lockMode = null, $lockVersion = null)
  * @method Property|null findOneBy(array $criteria, array $orderBy = null)
  * @method Property[]    findAll()
- * @method Property[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+// * @method Property[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PropertyRepository extends ServiceEntityRepository
 {
@@ -21,14 +25,51 @@ class PropertyRepository extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
+
+     public function findVisibleQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.sold = false');
+    }
+
     /**
      * @return Query
      */
-     public function findVisibleQuery(): Query
+    public function findAllVisbileQuery($search): Query
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.sold = false')
-            ->getQuery();
+        $query =  $this->findVisibleQuery();
+
+        //die(var_dump($search->getMaxPrice().'and'.$search->getMinRoom()));
+
+        if($search->getMaxPrice())
+        {
+            $query = $query
+                ->andWhere('p.price < :price')
+                ->setParameter('price', $search->getMaxPrice())
+            ;
+        }
+        if ($search->getMinRoom())
+        {
+            $query = $query
+                ->andWhere('p.rooms >= :room')
+                ->setParameter('room', $search->getMinRoom())
+            ;
+        }
+
+        if($search->getOptions()->count() > 0)
+        {
+            $key = 0;
+            foreach ($search->getOptions() as $option) {
+                $key++;
+                $query = $query
+                    ->andWhere(":option$key MEMBER OF p.options")
+                    ->setParameter("option$key", $option)
+                    ;
+            }
+        }
+
+        return $query->getQuery();
+
     }
 
    public function findLAtest() : array
@@ -39,6 +80,16 @@ class PropertyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findActive()
+    {   //new DateTime('-30 days')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.expiresAt >= :date')
+            ->setParameter('date', new DateTime())
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 

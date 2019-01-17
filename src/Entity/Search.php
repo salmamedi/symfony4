@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 
 
 class Search
@@ -17,19 +21,13 @@ class Search
     private $minRoom;
 
     /**
-     * @return int|null
+     * @var ArrayCollection
      */
-    public function getMaxPrice()
-    {
-        return $this->maxPrice;
-    }
+    private $options;
 
-    /**
-     * @param int|null $maxPrice
-     */
-    public function setMaxPrice($maxPrice)
+    public function __construct()
     {
-        $this->maxPrice = $maxPrice;
+        $this->options = new ArrayCollection();
     }
 
     /**
@@ -41,11 +39,48 @@ class Search
     }
 
     /**
-     * @param int|null $minRoom
+     * @param int $minRoom
+     * @return Search
      */
-    public function setMinRoom($minRoom)
+    public function setMinRoom(int $minRoom): Search
     {
         $this->minRoom = $minRoom;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxPrice()
+    {
+        return $this->maxPrice;
+
+    }
+
+    /**
+     * @param int $maxPrice
+     * @return Search
+     */
+    public function setMaxPrice(int $maxPrice): Search
+    {
+        $this->maxPrice = $maxPrice;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param ArrayCollection $options
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
     }
 
 

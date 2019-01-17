@@ -2,7 +2,6 @@
 
 namespace  App\Controller;
 
-
 use App\Entity\Property;
 //use GuzzleHttp\Psr7\Request;
 use App\Entity\Search;
@@ -14,31 +13,30 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PropertyRepository;
 use  Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use DateTime;
+
+//use Symfony\Component\Validator\Constraints\DateTime;
+
 
 
 class PropertyController extends AbstractController {
 
     /**
-    * @var PropertyRepository
-    */
-     private $repository;
+     * @var PropertyRepository
+     */
+    private $repository;
 
     /**
      * @var PaginatorInterface
      */
     private $paginator;
 
-    /*
-    * @var ObjectManager
-    */
-   // private $em;
-
-    public function __construct(PropertyRepository $repository, PaginatorInterface $paginator){
+    public function __construct(PropertyRepository $repository, PaginatorInterface $paginator ){
 
         $this->repository = $repository;
-        //$this->em = $em;
         $this->paginator = $paginator;
     }
+
 
     /**
      * @Route("/biens", name ="property.index")
@@ -47,16 +45,15 @@ class PropertyController extends AbstractController {
     public function index(Request $request)
     {
         $search = new Search();
-        //$search->setroomMin(1);
-
         $form = $this->createForm(SearchType::class, $search);
         $form->handleRequest($request);
+       // die(var_dump($form->getData()));
 //        if($form->isSubmitted() && $form->isValid()){
 //            //$data = $form->getData();
 //           // die(var_dump( $data));
 //        }
-        $query = $this->repository->findVisibleQuery();
 
+        $query = $this->repository->findAllVisbileQuery($search);
         $pagination =  $this->paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
@@ -72,26 +69,36 @@ class PropertyController extends AbstractController {
     }
 
     /**
-     * @Route("/{id}/{slug}", name ="property.show")
+     * @Route("/{slug}/{id}", name ="property.show")
      * @return Response
      */
-    public function showAction(Property $property, $slug)
+    public function showAction($slug, $id)
     {
-        if ($property->getSlug() !== $slug) {
-            return $this->redirectToRoute('property.show',[
-                'id' => $property->getId(),
+        $property = $this->repository->find($id);
 
-                'slug' => $property->getSlug()
-            ]);
-        }
+       // die($property->getSlug());
+//        if ($property->getSlug() !== $slug) {
+//            return $this->redirectToRoute('property.show',[
+//               'id' => $property->getId(),
+//                'slug' => $property->getSlug()
+//            ]);
+//        }
 
-        $em = $this->getDoctrine()->getManager();
-
-        //$property = $this->repository->find($id);
         return $this->render('Property/show.html.twig', [
             'current_menu' => 'properties',
             'property' =>  $property
+        ]);
+    }
 
+    /**
+     * @Route("/active", name="property.active")
+     */
+    public function propertyActive()
+    {
+        $propertiesActive = $this->repository->findActive(new DateTime('-30 days'));
+
+        return $this->render('Property/active.html.twig', [
+           'propertiesActive' => $propertiesActive
         ]);
     }
 }

@@ -3,13 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Property
 {
@@ -18,6 +21,9 @@ class Property
         0 => 'electric',
         1 => 'gaz'
     ];
+
+//    afin de stocker la date d'expiration d'une offre plutôt que de devoir la calculer.
+    const offerLifeTime  = 30; // durée de vie d'une offre en jours
 
 
     /**
@@ -87,9 +93,21 @@ class Property
      */
     private $created_at;
 
-    public function __construct(){
+     /**
+      * @ORM\Column(type="datetime")
+      */
+    private $expiresAt;
 
-        $this->created_at = new \Datetime();
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="properties")
+     */
+    private $options;
+
+
+    public function __construct()
+    {
+        $this->created_at       = new \Datetime();
+        $this->options = new ArrayCollection();
     }
 
     /**
@@ -277,6 +295,22 @@ class Property
     }
 
     /**
+     * @return mixed
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @param mixed $expiresAt
+     */
+    public function setExpiresAt($expiresAt)
+    {
+        $this->expiresAt = $expiresAt;
+    }
+
+    /**
      * @param mixed $zipCode
      * @return Property
      */
@@ -321,7 +355,50 @@ class Property
         $this->created_at = $created_at;
         return $this;
     }
+    
+    /**
+     * @ORM\PrePersist
+     */
+    public function setExpiresAtValue():self
+    {
+
+        // en remplissons automatiquement la date d'expiration si cette derniére n'a pas eté saisie manuellement
+        if(!$this->expiresAt) {
+            $this->expiresAt = new \DateTime('+'.self::offerLifeTime.'day');
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Option[]
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(Option $option): self
+    {
+        if (!$this->options->contains($option)) {
+            $this->options[] = $option;
+            $option->addProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(Option $option): self
+    {
+        if ($this->options->contains($option)) {
+            $this->options->removeElement($option);
+            $option->removeProperty($this);
+        }
+
+        return $this;
+    }
 
 
+
+ 
 
 }

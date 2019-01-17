@@ -26,6 +26,7 @@ class PropertyFixtures extends Fixture
                 ->setAddress($faker->address)
                 ->setZipCode($faker->postcode)
                 ->setSold(false)
+                //->setCreatedAt(new \DateTime('2018-09-08'))
                 ;
             $manager->persist($property);
         }

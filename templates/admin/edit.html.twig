@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container mt-4">
+        <h1>Modifier le bien </h1>
+    </div>
+    <div class="container">
+        <h2>Bien {{ property.id }} </h2>
+
+        {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+        <div class="container mt-4">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <h1 class="h3 mb-3 font-weight-normal text-center"></h1>
+            <div class="row">
+                <div class="col-md-4">
+                    {#{{ form_label(form.title, 'Titre') }}#}
+                    {{ form_row(form.title, {'label':'Titre','attr':{'placeholder': 'Titre'} }) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.rooms, {'label': 'rooms','attr':{'placeholder': 'rooms'}}) }}
+                    {{ form_errors(form.rooms) }}
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    {{ form_row(form.floor, {'label': 'floor','attr':{'placeholder': 'floor'}}) }}
+                    {{ form_errors(form.floor) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.price, {'label': 'price','attr':{'placeholder': 'price'}}) }}
+                    {{ form_errors(form.price) }}
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    {{ form_row(form.surface, {'label': 'surface','attr':{'placeholder': 'surface'}}) }}
+                    {{ form_errors(form.surface) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.heat, {'label': 'heat','attr':{'placeholder': 'heat'}}) }}
+                    {{ form_errors(form.heat) }}
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    {{ form_row(form.city) }}
+                    {{ form_errors(form.city) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.address, {'label': 'address','attr':{'placeholder': 'address'}}) }}
+                    {{ form_errors(form.address) }}
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    {{ form_row(form.zipCode, {'label': 'zipCode','attr':{'placeholder': 'zipCode'}}) }}
+                    {{ form_errors(form.zipCode) }}
+                </div>
+                {#<div class="col-md-4">#}
+                    {#{{ form_row(form.expiresAt, {'label': 'expire le ','attr':{'placeholder': ''}}) }}#}
+                    {#{{ form_errors(form.expiresAt) }}#}
+                {#</div>#}
+                <div class="col-md-4">
+                    {{ form_row(form.options, {'label': 'Option'}) }}
+                    {{ form_errors(form.options) }}
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    {{ form_row(form.sold, {'label': 'sold','attr':{'placeholder': 'sold'}}) }}
+                    {{ form_errors(form.sold) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form_row(form.description, {'label': 'Description','attr':{'placeholder': 'description'}}) }}
+                    {{ form_errors(form.description) }}
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"  class="btn btn-primary mt-4" >Inscription</button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+
+{% endblock %}
+

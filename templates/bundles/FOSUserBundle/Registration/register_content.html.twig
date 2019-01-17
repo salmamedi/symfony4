@@ -1,0 +1,41 @@
+
+
+{% block body %}
+
+     {#...#}
+     {#this tag only applies to the forms defined in this template#}
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+<div class="container mt-4">
+    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {{ form_errors(form) }}
+
+    <h1 class="h3 mb-3 font-weight-normal text-center">Inscription</h1>
+    <div>
+        {#{{ form_label(form.username, 'Identifiant') }}#}
+        {{ form_row(form.username, {'label':'Identifiant','attr':{'placeholder': 'Identifiant'} }) }}
+
+    </div>
+    <div>
+        {{ form_row(form.email, {'label': 'Email','attr':{'placeholder': 'Votre mail'}}) }}
+        {{ form_errors(form.email) }}
+    </div>
+    <div>
+        {{ form_errors(form.password) }}
+        {{ form_row(form.password, {'label': 'mot de passe', 'atrr':{'plachholder': 'Mpt de passe'} }) }}
+    </div>
+    <div>
+        {#{{ form_label(form.phone, 'Mot de passe') }}#}
+        {{ form_errors(form.phone) }}
+        {{ form_row(form.phone, {'label': 'Téléphone', 'atrr':{'plachholder': '06 42 25 54 45'} }) }}
+    </div>
+
+    <div>
+        <button type="submit"  class="btn btn-primary mt-4" >Inscription</button>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+
+{%endblock%}

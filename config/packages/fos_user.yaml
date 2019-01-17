@@ -2,6 +2,19 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: main
     user_class: App\Entity\User
+    service:
+        mailer: fos_user.mailer.twig_swift
     from_email:
-        address: "test@domain.com"
-        sender_name: "test@domain.com"
+        address: belmaati.falsalma@gmail.com
+        sender_name: test
+
+    registration:
+        form:
+            type: App\Form\RegistrationFormType
+        confirmation:
+            enabled: true
+#                template:   App:Notification:Mail:email.txt.twig
+#
+    resetting:
+        email:
+            template:   'App/Notification/Mail:password_resetting.html.twig'

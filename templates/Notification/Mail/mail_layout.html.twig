@@ -1,0 +1,28 @@
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head>#}
+    {#<meta charset="UTF-8" />#}
+    {#<title>#}
+        {#{% block title %}#}
+            {#{{ subjet }}#}
+        {#{% endblock %}#}
+    {#</title>#}
+    {#{% block stylesheets %}{% endblock %}#}
+    {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+{#</head>#}
+{#<body>#}
+{#<div class="content-signature">#}
+    {#{% block content %}#}
+        {#{{ content }}#}
+    {#{% endblock %}#}
+{#</div>#}
+
+{#<div class="content-signature">#}
+    {#<br><br>#}
+    {#<img src="{{ absolute_url(asset('/bundles/econocomcms/images/logo/econocom_logo_signature.png')) }}">#}
+    {#<br>#}
+    {#Administration ILS Econocom#}
+{#</div>#}
+{#{% block javascripts %}{% endblock %}#}
+{#</body>#}
+{#</html>#}
