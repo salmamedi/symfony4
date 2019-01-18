@@ -3,15 +3,17 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
+ * @Vich\Uploadable
  * @ORM\HasLifecycleCallbacks()
  */
 class Property
@@ -32,6 +34,19 @@ class Property
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fileName;
+
+    /**
+     * @var File|null
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="fileName")
+     */
+    private $imageFile;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -102,6 +117,11 @@ class Property
      * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="properties")
      */
     private $options;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $apdated_at;
 
 
     public function __construct()
@@ -395,7 +415,50 @@ class Property
         }
 
         return $this;
+        }
+
+    /**
+     * @return null|string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }/**
+     * @param null|string $fileName
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+    }/**
+     * @return mixed
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }/**
+     * @param mixed $imageFile
+     */
+    public function setImageFile($imageFile)
+    {
+        $this->imageFile = $imageFile;
+        if ($this->imageFile instanceof UploadedFile) {
+            $this->apdated_at = new \DateTime('now');
+        }
+        return $this;
     }
+
+    public function getApdatedAt(): ?\DateTimeInterface
+    {
+        return $this->apdated_at;
+    }
+
+    public function setApdatedAt(\DateTimeInterface $apdated_at): self
+    {
+        $this->apdated_at = $apdated_at;
+
+        return $this;
+    }
+
 
 
 

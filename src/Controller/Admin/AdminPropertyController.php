@@ -64,9 +64,12 @@ class AdminPropertyController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $response = new RedirectResponse('admin.property.show');
+          //  $response = new RedirectResponse('admin.property.show');
+            $this->em->flush($property);
+            return $this->redirectToRoute('admin.property.index');
+
+
         }
-        $this->em->flush($property);
 
         return $this->render('admin/edit.html.twig', [
             'property' => $property,
